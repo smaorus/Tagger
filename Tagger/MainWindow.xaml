@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="324.074" Width="525">
+        Title="MainWindow" >
     <Window.Resources>
         <Image x:Key="Play" Source="Resource/play-2-24.png" Stretch="Fill"/>
         <Image x:Key="Pause" Source="Resource/pause-2-24.png"/>
@@ -28,9 +28,10 @@
             <Button Click="Button_Click" Name="btnPlay" IsEnabled="False" >
                 <DynamicResource ResourceKey="Play"/>
             </Button>
+            <Slider Name="timelineSlider" Margin="50, 20"  Width="200" IsEnabled="False"/>
         </ToolBar>
 
-        <MediaElement Name="mePlayer" Grid.Row="1" LoadedBehavior="Manual" Stretch="None" />
+        <MediaElement Name="mePlayer" Grid.Row="1" LoadedBehavior="Manual" Stretch="UniformToFill" StretchDirection="DownOnly" ScrubbingEnabled="True" />
 
     </Grid>
 </Window>
