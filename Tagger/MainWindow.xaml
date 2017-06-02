@@ -28,7 +28,9 @@
             <Button Click="Button_Click" Name="btnPlay" IsEnabled="False" >
                 <DynamicResource ResourceKey="Play"/>
             </Button>
-            <Slider Name="timelineSlider" Margin="50, 20"  Width="200" IsEnabled="False"/>
+            <Slider Name="timelineSlider" Margin="50, 20"  Width="200" IsEnabled="False" Maximum="1" Thumb.DragStarted="sliProgress_DragStarted"  Thumb.DragCompleted="sliProgress_DragCompleted" ValueChanged="SeekToMediaPosition" IsMoveToPointEnabled="True" />
+            <TextBox Name="tagBox" Width="600" KeyUp="keyUpTagBox" IsEnabled="False">
+            </TextBox>
         </ToolBar>
 
         <MediaElement Name="mePlayer" Grid.Row="1" LoadedBehavior="Manual" Stretch="UniformToFill" StretchDirection="DownOnly" ScrubbingEnabled="True" />
