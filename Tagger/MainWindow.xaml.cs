@@ -34,8 +34,8 @@ namespace Tagger
         {
             InitializeComponent();
             playStateController = new PlayStateController();
-            playStateController.DisableCommand += (s, e) => { btnPlay.IsEnabled = false; timelineSlider.IsEnabled = false; /*tagBox.IsEnabled = false;*/ };
-            playStateController.EnableCommand += (s, e) => { btnPlay.IsEnabled = true; timelineSlider.IsEnabled = true; timelineSlider.Value = 0; timer.Start();/* tagBox.IsEnabled = true;*/ };
+            playStateController.DisableCommand += (s, e) => { btnPlay.IsEnabled = false; timelineSlider.IsEnabled = false; tagBox.IsEnabled = false; };
+            playStateController.EnableCommand += (s, e) => { btnPlay.IsEnabled = true; timelineSlider.IsEnabled = true; timelineSlider.Value = 0; timer.Start(); tagBox.IsEnabled = true; };
             playStateController.PauseCommand += (s, e) => { btnPlay.Content = FindResource("Play"); mePlayer.Pause(); };
             playStateController.PlayCommand += (s, e) => { btnPlay.Content = FindResource("Pause"); mePlayer.Play(); RenewSliderPosition(); };
 
@@ -47,6 +47,8 @@ namespace Tagger
             //tagBox.Background = new SolidColorBrush();
 
             tagSaver = new TagSaver();
+
+            
         }
 
         private void sliderTick(object sender, EventArgs e)
@@ -68,7 +70,7 @@ namespace Tagger
         {
             return mePlayer.Position.TotalSeconds /
                                                    mePlayer.NaturalDuration.TimeSpan.TotalSeconds;
-;
+            ;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -78,10 +80,11 @@ namespace Tagger
 
         private void mePlayer_Drop(object sender, DragEventArgs e)
         {
-            string filePath = ((string[]) e.Data.GetData(DataFormats.FileDrop))[0];
+            string filePath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
             mePlayer.Source = new Uri(filePath);
 
             playStateController.Enable();
+            tagBox.Text = "Loading..";
         }
 
         private void sliProgress_DragStarted(object sender, DragStartedEventArgs e)
@@ -106,7 +109,8 @@ namespace Tagger
                 return;
             }
 
-            if (mePlayer.NaturalDuration.HasTimeSpan){
+            if (mePlayer.NaturalDuration.HasTimeSpan)
+            {
                 mePlayer.Position = TimeSpan.FromSeconds(timelineSlider.Value * mePlayer.NaturalDuration.TimeSpan.TotalSeconds);
             }
         }
@@ -123,11 +127,21 @@ namespace Tagger
                 animation.To = Colors.LightGreen;
                 animation.Duration = new Duration(TimeSpan.FromMilliseconds(350));
                 animation.AutoReverse = true;
+                tagBox.Background = new SolidColorBrush();
                 tagBox.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
 
                 tagSaver.Save(new Tag() { TagContent = tag, SecondsSinceStart = (int)mePlayer.Position.TotalSeconds, VideoName = mePlayer.Source.ToString() });
             }
         }
-        
+
+        private void VideoLoaded(object sender, EventArgs a)
+        {
+            tagBox.Text = string.Empty;
+        }
+
+        private void dragEnter(object sender, EventArgs a)
+        {
+
+        }
     }
 }

@@ -26,8 +26,8 @@ namespace Tagger
             IsEnabled = true;
             EnableCommand?.Invoke(this, EventArgs.Empty);
 
-            //IsPaused = false;
-            //PlayCommand?.Invoke(this, EventArgs.Empty);
+            IsPaused = false;
+            PlayCommand?.Invoke(this, EventArgs.Empty);
         }
 
         public void Disable()
